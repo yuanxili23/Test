@@ -1,4 +1,6 @@
 import os
+from website.lib.database_config import DatabaseConfig
+
 
 # Statement for enabling the development environment
 DEBUG = True
@@ -12,6 +14,8 @@ HOST = '0.0.0.0'
 
 PORT = 5000
 
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://%s:%s@%s/%s' % ('root', 'love0906',
+                                                   'localhost', 'sys')
 
 #########################
 
