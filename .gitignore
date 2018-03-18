@@ -2,3 +2,5 @@ Test.iml
 .idea/
 Test.egg-info/
 dist
+.gitignore
+.idea/workspace.xml
