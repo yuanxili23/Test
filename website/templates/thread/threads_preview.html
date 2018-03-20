@@ -1,0 +1,20 @@
+{% extends "base/layout.html" %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+<h2>Chat Room</h2>
+{% endblock %}
+
+
+{% block content %}
+<div class="col-md-10">
+    <ul class="list-group">
+        {% for thread in threads %}
+        <li class="list-group-item"><a href="{{ url_for('load_thread', thread_name=thread.subject) }}">{{ thread.subject }}</a><span class="badge">12</span></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

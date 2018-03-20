@@ -6,3 +6,7 @@ from flask import render_template
 def page_not_found(e):
     return render_template('error/404.html'), 404
 
+
+@app.errorhandler(400)
+def page_not_found(e):
+    return render_template('error/400.html'), 400
