@@ -1,31 +1,30 @@
-<!DOCTYPE html>
-<html lang="en" >
-    <head>
-        <meta charset="UTF-8">
-        <title>Login</title>
-        <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+{% extends "base/layout.html" %}
 
-    </head>
-    <body>
-        <div class="login-page">
-            <div class="form">
-                <div class="register-form form-page">
-                    <input id="register-user" type="text" placeholder="name" required/>
-                    <input id="register-password" type="password" placeholder="password" required/>
-                    <!--<input id="email" type="text" placeholder="email address"/>-->
-                    <button id="create">create</button>
-                    <p class="message">Already registered? <a href="#">Sign In</a></p>
-                </div>
-                <div class="login-form form-page">
-                    <input id="login-user" type="text" placeholder="username" required/>
-                    <input id="login-password" type="password" placeholder="password" required/>
-                    <button id="login">login</button>
-                    <p class="message">Not registered? <a href="#">Create an account</a></p>
-                </div>
-            </div>
+{% block head %}
+<link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}
+
+{% block title %} <br> {% endblock %}
+
+{% block content %}
+<body>
+<div class="login-page">
+    <div class="form">
+        <div class="register-form form-page">
+            <input id="register-user" type="text" placeholder="name" required/>
+            <input id="register-password" type="password" placeholder="password" required/>
+            <!--<input id="email" type="text" placeholder="email address"/>-->
+            <button id="create">create</button>
+            <p class="message">Already registered? <a href="#">Sign In</a></p>
         </div>
-    </body>
-
-    <script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-</html>
+        <div class="login-form form-page">
+            <input id="login-user" type="text" placeholder="username" required/>
+            <input id="login-password" type="password" placeholder="password" required/>
+            <button id="login">login</button>
+            <p class="message">Not registered? <a href="#">Create an account</a></p>
+        </div>
+    </div>
+</div>
+</body>
+{% endblock %}
