@@ -10,7 +10,6 @@ $(function(){
             type: 'POST',
             success: function(response) {
                 obj = JSON.parse(response);
-                console.log(obj)
                 var first_char_in_name = obj.created_by.charAt(0);
                 var chat = '<li class="left clearfix">'
                          +   '<span class="chat-img pull-left">'
@@ -41,18 +40,22 @@ $(function(){
         }
     });
 
+    $(document).ready(function(e){
+        time = 2000;
+        setTimeout(function() {count_thread(0, time)}, time);
+    })
 
-    var count_thread = function(count) {
+    var count_thread = function(count, time) {
         var thread_id = $('div[id=thread_id]').html();
         $.ajax({
             url: '/threads/' + thread_id + '/count_messages',
             type: 'GET',
             success: function(response) {
                 delta = parseInt(response) - parseInt(count);
-                if (delta > 0) {
+                if (delta > 0 && count != 0) {
                     notify(delta);
                 }
-                count_thread(response);
+                setTimeout(function() {count_thread(response, time + 2000)}, time + 2000);
             },
             error: function(error) {
                 error_handler(error);
