@@ -1,0 +1,23 @@
+{% extends "base/layout.html" %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/error.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} {% endblock %}
+
+{% block content %}
+<section id="not-found">
+    <div class="circles">
+        <p>{% block error_code %} {% endblock %}<br>
+            <small>{% block error_message %} {% endblock %}</small>
+        </p>
+        <span class="circle big"></span>
+        <span class="circle med"></span>
+        <span class="circle small"></span>
+    </div>
+</section>
+{% endblock %}
+
+
+

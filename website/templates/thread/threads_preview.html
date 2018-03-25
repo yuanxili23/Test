@@ -2,6 +2,7 @@
 
 {% block head %}
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/threads_preview.js') }}"></script>
 {% endblock %}
 
 {% block title %}
@@ -13,8 +14,11 @@
 <div class="col-md-10">
     <ul class="list-group">
         {% for thread in threads %}
-        <li class="list-group-item"><a href="{{ url_for('load_thread', thread_name=thread.subject) }}">{{ thread.subject }}</a><span class="badge">12</span></li>
+        <li class="list-group-item"><a href="{{ url_for('load_thread', thread_name=thread.subject) }}">{{ thread.subject }}</a><span class="badge"></span></li>
         {% endfor %}
+        <li class="list-group-item list-group-item-info">
+            Add a new chat room: <input id="new_thread" required/>
+        </li>
     </ul>
 </div>
 {% endblock %}

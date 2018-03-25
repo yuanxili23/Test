@@ -1,16 +1,20 @@
 from hashlib import md5
 from website import app
 from website import db
+from website.lib.login_validate import validate_login
 from website.models.content import Content
 from website.models.thread import Thread
 from website.models.user import User
 from datetime import datetime
-from flask import request, render_template, abort, session, make_response, redirect, url_for
+from flask import request, render_template, abort, make_response, url_for
 import json
 
 
 @app.route('/')
 def login():
+    user = request.cookies.get('user')
+    if user is not None:
+        return list_threads()
     return render_template('login.html')
 
 
@@ -20,10 +24,9 @@ def user_login():
     password = md5(request.form['password']).hexdigest()
     username = User.query.filter(User.user == user).one_or_none()
     if username is None:
-        return abort(400)
+        return abort(401)
     if username.password != password:
-        return abort(400)
-
+        return abort(401)
     response = make_response(url_for('list_threads'))
     response.set_cookie('user', user)
     return response
@@ -36,7 +39,7 @@ def user_register():
     password = md5(request.form['password']).hexdigest()
     username = User.query.filter(User.user == user).one_or_none()
     if username is not None:
-        return abort(400)
+        abort(409)
     new_user = User(user=user, password=password, created_date=date)
     db.session.add(new_user)
     db.session.commit()
@@ -49,8 +52,7 @@ def user_register():
 @app.route('/thread/post_content', methods=['POST'])
 def post_content():
     user = request.cookies.get('user')
-    if user is None:
-        return abort(400)
+    validate_login(user)
     date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     thread_name = request.form['thread']
     thread = Thread.query.filter(Thread.subject == thread_name).one_or_none()
@@ -70,14 +72,10 @@ def post_content():
 
 @app.route('/threads/<thread_name>', methods=['POST', 'GET'])
 def load_thread(thread_name):
-    user = request.cookies.get('user')
-    if user is None:
-        return abort(400)
+    validate_login(request.cookies.get('user'))
     query = Thread.query.filter(Thread.subject == thread_name)
-    print(query.count())
     if query.count() != 0:
         thread = query.one_or_none()
-        print(thread)
         contents = Content.query.filter(Content.thread_id == thread.id).order_by(Content.created_date.desc())
         return render_template('thread/thread.html', thread=thread, contents=contents)
     else:
@@ -91,8 +89,16 @@ def load_thread(thread_name):
 
 @app.route('/list_threads', methods=['GET'])
 def list_threads():
-    threads = Thread.query.all()
+    validate_login(request.cookies.get('user'))
+    threads = Thread.query.order_by(Thread.subject).all()
     return render_template('thread/threads_preview.html', threads=threads)
+
+
+@app.route('/threads/<thread_id>/count_messages', methods=['GET'])
+def count_messages(thread_id):
+    query = Content.query.filter(Content.thread_id == thread_id)
+    print(str(query.count()))
+    return str(query.count())
 
 
 @app.route('/test')

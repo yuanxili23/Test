@@ -1,4 +1,4 @@
-jQuery(document).ready(function($){
+$(function(){
     //you can now use $ as your jQuery object.
     $('.message a').click(function(){
         $('div.form-page').animate({height: "toggle", opacity: "toggle"}, "slow");
@@ -15,15 +15,10 @@ jQuery(document).ready(function($){
                 window.location.response;
             },
             error: function(error) {
-                if (error.status == 400) {
-                    window.location = "error/400.html";
-                } else {
-                    console.log(error);
-                    window.location = "error/unknown.html";
-                }
+                error_handler(error);
             }
         });
-    })
+    });
 
     $('button[id=login]').click(function(){
         var user = $('div.login-form input[id=login-user]').val();
@@ -36,13 +31,16 @@ jQuery(document).ready(function($){
                 window.location = response;
             },
             error: function(error) {
-                if (error.status == 400) {
-                    window.location = "error/400.html";
-                } else {
-                    console.log(error);
-                    window.location = "error/unknown.html";
-                }
+                error_handler(error);
             }
         });
-    })
+    });
+
+    $(document).keypress(function(e){
+       if (e.which == 13){
+            $("button").click();
+        }
+    });
 });
+
+

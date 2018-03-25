@@ -5,6 +5,8 @@ from website.lib.database_config import DatabaseConfig
 # Statement for enabling the development environment
 DEBUG = True
 
+SSL_CONTEXT = 'adhoc'
+
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Define the application directory
